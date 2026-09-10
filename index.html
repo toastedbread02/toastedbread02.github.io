@@ -3,212 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What Happens When You Visit a Website?</title>
+    <title>How GPS Works</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="background">
-        <div class="grid"></div>
-        <div class="glow glow-one"></div>
-        <div class="glow glow-two"></div>
-    </div>
-
     <header>
-        <div class="logo">
-            <span class="logo-dot"></span>
-            WEB//FLOW
-        </div>
-        <div class="header-status">
-            <span class="status-dot"></span>
-            SYSTEM ONLINE
-        </div>
+        <div class="logo">GPS<span>•</span></div>
+        <div class="header-text">HOW GPS WORKS</div>
     </header>
 
     <main>
-        <section class="hero" id="hero">
-            <div class="eyebrow">INTERACTIVE INTERNET SIMULATION</div>
 
-            <h1>
-                What happens when<br>
-                <span>you visit a website?</span>
-            </h1>
+        <section class="hero">
+            <div class="hero-text">
+                <p class="small-title">A SIMPLE GUIDE TO</p>
+                <h1>How does GPS<br>know where you are?</h1>
 
-            <p class="intro">
-                Type a website below and watch your request travel
-                through the internet, step by step.
-            </p>
+                <p class="intro">
+                    GPS uses satellites in space to help your phone
+                    figure out its location.
+                </p>
 
-            <div class="url-box">
-                <div class="url-icon">⌕</div>
-                <input
-                    id="urlInput"
-                    type="text"
-                    value="example.com"
-                    spellcheck="false"
-                    autocomplete="off"
-                >
-                <button id="startButton">START <span>→</span></button>
+                <button id="startButton">Show me how</button>
             </div>
 
-            <div class="hint">
-                Try <b>google.com</b>, <b>wikipedia.org</b>, or any website
+            <div class="earth-area">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+
+                <div class="earth">
+                    <div class="continent continent-one"></div>
+                    <div class="continent continent-two"></div>
+                    <div class="continent continent-three"></div>
+                </div>
+
+                <div class="satellite sat-one">
+                    <span>★</span>
+                </div>
+
+                <div class="satellite sat-two">
+                    <span>★</span>
+                </div>
+
+                <div class="satellite sat-three">
+                    <span>★</span>
+                </div>
+
+                <div class="signal signal-one"></div>
+                <div class="signal signal-two"></div>
+                <div class="signal signal-three"></div>
+
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="location-dot"></div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="simulation hidden" id="simulation">
 
-            <div class="simulation-top">
-                <div>
-                    <div class="eyebrow">LIVE SIMULATION</div>
-                    <h2 id="simulationTitle">Connecting...</h2>
-                </div>
+        <section class="explainer" id="explainer">
 
-                <button class="restart" id="restartButton">
-                    ↻ Restart
-                </button>
+            <div class="section-heading">
+                <p class="small-title">STEP BY STEP</p>
+                <h2>It's actually pretty clever.</h2>
+                <p>
+                    Your phone doesn't ask a satellite,
+                    “Where am I?”
+                </p>
+                <p>
+                    Instead, it uses signals from several satellites
+                    to work it out.
+                </p>
             </div>
 
-            <div class="network">
 
-                <div class="node computer">
-                    <div class="node-icon">▣</div>
-                    <div class="node-title">YOUR COMPUTER</div>
-                    <div class="node-sub">Browser</div>
-                    <div class="node-pulse"></div>
-                </div>
+            <div class="step-card active" data-step="0">
 
-                <div class="connection connection-one">
-                    <div class="packet"></div>
-                    <div class="connection-label">REQUEST</div>
-                </div>
-
-                <div class="node dns">
-                    <div class="node-icon">⌁</div>
-                    <div class="node-title">DNS</div>
-                    <div class="node-sub">Name lookup</div>
-                    <div class="node-pulse"></div>
-                </div>
-
-                <div class="connection connection-two">
-                    <div class="packet"></div>
-                    <div class="connection-label">IP ADDRESS</div>
-                </div>
-
-                <div class="node internet">
-                    <div class="node-icon">◎</div>
-                    <div class="node-title">INTERNET</div>
-                    <div class="node-sub">Network</div>
-                    <div class="node-pulse"></div>
-                </div>
-
-                <div class="connection connection-three">
-                    <div class="packet"></div>
-                    <div class="connection-label">HTTPS</div>
-                </div>
-
-                <div class="node server">
-                    <div class="node-icon">▤</div>
-                    <div class="node-title">WEB SERVER</div>
-                    <div class="node-sub" id="serverName">example.com</div>
-                    <div class="node-pulse"></div>
-                </div>
-
-            </div>
-
-            <div class="info-panel">
-                <div class="step-number" id="stepNumber">01</div>
+                <div class="step-number">01</div>
 
                 <div class="step-content">
-                    <div class="step-label" id="stepLabel">DNS LOOKUP</div>
-                    <h3 id="stepTitle">Finding the website</h3>
-                    <p id="stepDescription">
-                        Your browser needs to find the IP address of the
-                        server hosting the website.
+                    <h3>Satellites are always up there</h3>
+
+                    <p>
+                        GPS satellites orbit Earth and constantly
+                        send signals toward the ground.
                     </p>
+
+                    <div class="visual-box">
+                        <div class="simple-space">
+                            <div class="mini-earth"></div>
+
+                            <div class="mini-satellite">
+                                ★
+                            </div>
+
+                            <div class="mini-signal"></div>
+                        </div>
+
+                        <div class="visual-caption">
+                            A satellite sends a signal toward Earth.
+                        </div>
+                    </div>
                 </div>
 
-                <div class="step-progress">
-                    <div class="progress-label">
-                        <span>PROGRESS</span>
-                        <span id="progressText">1 / 5</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div id="progressFill"></div>
-                    </div>
-                </div>
             </div>
 
-            <div class="technical-panel">
-                <div class="tech-header">
-                    <span>NETWORK ACTIVITY</span>
-                    <span id="activityStatus">WAITING</span>
+
+            <div class="step-card" data-step="1">
+
+                <div class="step-number">02</div>
+
+                <div class="step-content">
+                    <h3>Your phone receives the signal</h3>
+
+                    <p>
+                        The signal travels from the satellite
+                        to your phone.
+                    </p>
+
+                    <p>
+                        Because we know how fast the signal travels,
+                        your phone can figure out roughly how far
+                        away the satellite is.
+                    </p>
+
+                    <div class="distance-demo">
+                        <div class="distance-line"></div>
+
+                        <div class="distance-satellite">
+                            ★
+                        </div>
+
+                        <div class="distance-phone">
+                            📱
+                        </div>
+
+                        <div class="distance-text">
+                            “The satellite is about this far away.”
+                        </div>
+                    </div>
                 </div>
 
-                <div class="terminal" id="terminal">
-                    <div><span class="terminal-green">›</span> Initializing simulation...</div>
-                </div>
             </div>
 
-            <div class="continue-area">
-                <button id="nextButton" class="next-button">
-                    NEXT STEP <span>→</span>
-                </button>
+
+            <div class="step-card" data-step="2">
+
+                <div class="step-number">03</div>
+
+                <div class="step-content">
+                    <h3>One satellite isn't enough</h3>
+
+                    <p>
+                        Imagine you know you're exactly 20 km
+                        away from a satellite.
+                    </p>
+
+                    <p>
+                        You could be anywhere on a huge circle
+                        around that satellite.
+                    </p>
+
+                    <div class="circle-demo">
+                        <div class="circle-center">
+                            ★
+                        </div>
+
+                        <div class="big-circle"></div>
+
+                        <div class="circle-person">
+                            📱
+                        </div>
+                    </div>
+
+                    <div class="info-note">
+                        One satellite gives your phone a distance,
+                        but not your exact location.
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="step-card" data-step="3">
+
+                <div class="step-number">04</div>
+
+                <div class="step-content">
+                    <h3>More satellites make it clearer</h3>
+
+                    <p>
+                        Your phone does the same thing with
+                        several satellites.
+                    </p>
+
+                    <p>
+                        The possible locations get smaller and smaller
+                        until the phone can find where the distances meet.
+                    </p>
+
+                    <div class="trilateration">
+
+                        <div class="gps-circle circle-a"></div>
+                        <div class="gps-circle circle-b"></div>
+                        <div class="gps-circle circle-c"></div>
+
+                        <div class="gps-satellite gps-a">★</div>
+                        <div class="gps-satellite gps-b">★</div>
+                        <div class="gps-satellite gps-c">★</div>
+
+                        <div class="your-location">
+                            <div class="location-pulse"></div>
+                            <span>YOU</span>
+                        </div>
+
+                    </div>
+
+                    <div class="info-note">
+                        Where the measurements meet is your location.
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="step-card" data-step="4">
+
+                <div class="step-number">05</div>
+
+                <div class="step-content">
+                    <h3>And that's how your phone finds you</h3>
+
+                    <p>
+                        Your phone combines the information from
+                        several satellites and calculates your position.
+                    </p>
+
+                    <div class="result-box">
+
+                        <div class="result-icon">●</div>
+
+                        <div>
+                            <strong>Location found</strong>
+                            <p>
+                                Your phone now knows where you are.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <button class="again-button" id="againButton">
+                        Watch it again
+                    </button>
+
+                </div>
+
             </div>
 
         </section>
 
-        <section class="final hidden" id="final">
 
-            <div class="success-icon">✓</div>
+        <section class="try-it">
 
-            <div class="eyebrow">TRANSMISSION COMPLETE</div>
+            <p class="small-title">TRY IT</p>
 
-            <h2>
-                The website<br>
-                <span>has arrived.</span>
-            </h2>
+            <h2>See GPS find a location</h2>
 
             <p>
-                Your browser requested information, the server processed it,
-                and the response travelled all the way back to you.
+                Move the phone and watch the three circles change.
             </p>
 
-            <div class="stats">
-                <div class="stat">
-                    <strong id="statDns">24</strong>
-                    <span>DNS ms</span>
+            <div class="interactive-map">
+
+                <div class="map-grid"></div>
+
+                <div class="map-satellite map-sat-one">★</div>
+                <div class="map-satellite map-sat-two">★</div>
+                <div class="map-satellite map-sat-three">★</div>
+
+                <div class="map-circle map-circle-one"></div>
+                <div class="map-circle map-circle-two"></div>
+                <div class="map-circle map-circle-three"></div>
+
+                <div id="mapPhone" class="map-phone">
+                    📱
                 </div>
 
-                <div class="stat">
-                    <strong id="statConnection">47</strong>
-                    <span>CONNECTION ms</span>
-                </div>
-
-                <div class="stat">
-                    <strong id="statServer">82</strong>
-                    <span>SERVER ms</span>
-                </div>
-
-                <div class="stat">
-                    <strong id="statTotal">153</strong>
-                    <span>TOTAL ms</span>
-                </div>
             </div>
 
-            <button id="againButton" class="next-button">
-                RUN AGAIN <span>↻</span>
-            </button>
+            <input
+                id="positionSlider"
+                type="range"
+                min="10"
+                max="90"
+                value="50"
+            >
+
+            <p class="slider-label">
+                Move the phone
+            </p>
 
         </section>
+
+
+        <section class="facts">
+
+            <div class="fact">
+                <strong>24+</strong>
+                <span>GPS satellites are available around Earth.</span>
+            </div>
+
+            <div class="fact">
+                <strong>~20,000 km</strong>
+                <span>Above Earth, GPS satellites orbit.</span>
+            </div>
+
+            <div class="fact">
+                <strong>3D</strong>
+                <span>GPS can find your position and your height.</span>
+            </div>
+
+        </section>
+
+
+        <section class="final-section">
+
+            <div class="final-icon">GPS</div>
+
+            <h2>So next time you open Maps...</h2>
+
+            <p>
+                Remember that your phone is listening to signals
+                from satellites far above Earth and using them
+                to figure out where you are.
+            </p>
+
+        </section>
+
     </main>
 
+
     <footer>
-        <span>WEB//FLOW</span>
-        <span>Built for Information Class</span>
-        <span>© 2026</span>
+        <span>HOW GPS WORKS</span>
+        <span>Made for information class</span>
     </footer>
 
     <script src="script.js"></script>
+
 </body>
 </html>
