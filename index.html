@@ -1,357 +1,1163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How GPS Works</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPS — How does your phone know where you are?</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #202124;
+    background: #fff;
+    overflow-x: hidden;
+}
+
+button {
+    font: inherit;
+}
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 45%, #eaf2ff 0%, #ffffff 42%);
+}
+
+.hero-content {
+    width: min(1200px, 90%);
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+.eyebrow {
+    color: #1a73e8;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-size: clamp(60px, 10vw, 150px);
+    line-height: .9;
+    letter-spacing: -0.075em;
+    margin: 0;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    max-width: 650px;
+    margin: 30px auto 38px;
+    font-size: clamp(20px, 2.3vw, 28px);
+    line-height: 1.35;
+    color: #5f6368;
+}
+
+.primary-button {
+    border: 0;
+    background: #1a73e8;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 5px 20px rgba(26,115,232,.2);
+    transition: transform .2s, box-shadow .2s;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(26,115,232,.3);
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #9aa0a6;
+    font-size: 13px;
+}
+
+.story {
+    min-height: 100vh;
+    padding: 120px 6vw;
+    display: flex;
+    align-items: center;
+}
+
+.story-inner {
+    width: min(1250px, 100%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 50px;
+    align-items: center;
+}
+
+.story-text h2 {
+    font-size: clamp(42px, 5vw, 75px);
+    line-height: .95;
+    letter-spacing: -.055em;
+    margin: 0 0 25px;
+}
+
+.story-text p {
+    font-size: 21px;
+    line-height: 1.55;
+    color: #5f6368;
+    max-width: 430px;
+}
+
+.step {
+    color: #1a73e8;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: .08em;
+    margin-bottom: 18px;
+}
+
+.visual {
+    height: min(650px, 65vw);
+    min-height: 430px;
+    position: relative;
+    border-radius: 35px;
+    background: #f8fafd;
+    overflow: hidden;
+}
+
+.visual svg {
+    width: 100%;
+    height: 100%;
+}
+
+.signal {
+    stroke: #1a73e8;
+    stroke-width: 3;
+    stroke-dasharray: 10 10;
+    opacity: 0;
+}
+
+.satellite {
+    fill: #202124;
+}
+
+.satellite-panel {
+    fill: #5f6368;
+}
+
+.earth {
+    fill: #dcecff;
+    stroke: #8ab4f8;
+    stroke-width: 2;
+}
+
+.land {
+    fill: #9cc8a5;
+}
+
+.phone {
+    fill: #202124;
+}
+
+.phone-screen {
+    fill: #e8f0fe;
+}
+
+.location-dot {
+    fill: #1a73e8;
+    opacity: 0;
+}
+
+.distance-circle {
+    fill: rgba(26,115,232,.08);
+    stroke: #8ab4f8;
+    stroke-width: 2;
+    opacity: 0;
+}
+
+.story.active .signal {
+    animation: signalAppear 1.3s ease forwards;
+}
+
+.story.active .location-dot {
+    animation: dotAppear .6s ease forwards;
+}
+
+@keyframes signalAppear {
+    from {
+        opacity: 0;
+        stroke-dashoffset: 40;
+    }
+    to {
+        opacity: 1;
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes dotAppear {
+    from {
+        opacity: 0;
+        transform: scale(.2);
+        transform-origin: center;
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        transform-origin: center;
+    }
+}
+
+.story:nth-of-type(3) .distance-circle {
+    animation: circleIn 1s ease forwards;
+}
+
+@keyframes circleIn {
+    from {
+        opacity: 0;
+        transform: scale(.2);
+        transform-origin: center;
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        transform-origin: center;
+    }
+}
+
+.interactive {
+    min-height: 100vh;
+    padding: 120px 6vw;
+    background: #f8fafd;
+}
+
+.interactive-header {
+    max-width: 850px;
+    margin: auto;
+    text-align: center;
+}
+
+.interactive-header h2 {
+    font-size: clamp(48px, 7vw, 95px);
+    letter-spacing: -.065em;
+    line-height: .92;
+    margin: 0 0 25px;
+}
+
+.interactive-header p {
+    color: #5f6368;
+    font-size: 21px;
+    line-height: 1.5;
+}
+
+.demo {
+    width: min(1050px, 100%);
+    height: 620px;
+    margin: 70px auto 0;
+    background: white;
+    border-radius: 35px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 60px rgba(60,64,67,.12);
+}
+
+.demo svg {
+    width: 100%;
+    height: 100%;
+}
+
+.demo-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(15px);
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 5px 30px rgba(0,0,0,.1);
+    display: flex;
+    gap: 5px;
+}
+
+.demo-controls button {
+    border: 0;
+    background: transparent;
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #5f6368;
+}
+
+.demo-controls button.active {
+    background: #e8f0fe;
+    color: #1967d2;
+    font-weight: 600;
+}
+
+.explanation {
+    margin-top: 35px;
+    text-align: center;
+    font-size: 19px;
+    color: #5f6368;
+    min-height: 30px;
+}
+
+.nerdy {
+    padding: 140px 6vw;
+    background: #202124;
+    color: white;
+}
+
+.nerdy-inner {
+    width: min(950px, 100%);
+    margin: auto;
+}
+
+.nerdy h2 {
+    font-size: clamp(48px, 7vw, 90px);
+    letter-spacing: -.06em;
+    line-height: .95;
+    margin: 0 0 35px;
+}
+
+.nerdy p {
+    color: #bdc1c6;
+    font-size: 20px;
+    line-height: 1.7;
+    max-width: 780px;
+}
+
+.nerdy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 60px;
+}
+
+.nerdy-card {
+    border: 1px solid #3c4043;
+    border-radius: 22px;
+    padding: 28px;
+}
+
+.nerdy-card strong {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.nerdy-card span {
+    color: #9aa0a6;
+    line-height: 1.5;
+}
+
+.final {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 6vw;
+}
+
+.final h2 {
+    font-size: clamp(55px, 9vw, 125px);
+    line-height: .88;
+    letter-spacing: -.075em;
+    margin: 0;
+}
+
+.final p {
+    color: #5f6368;
+    font-size: 21px;
+    margin-top: 35px;
+}
+
+.blue {
+    color: #1a73e8;
+}
+
+@media (max-width: 850px) {
+    .story-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .story-text {
+        text-align: center;
+    }
+
+    .story-text p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .visual {
+        min-height: 350px;
+        height: 60vw;
+    }
+
+    .demo {
+        height: 500px;
+    }
+
+    .nerdy-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">GPS<span>•</span></div>
-        <div class="header-text">HOW GPS WORKS</div>
-    </header>
-
-    <main>
-
-        <section class="hero">
-            <div class="hero-text">
-                <p class="small-title">A SIMPLE GUIDE TO</p>
-                <h1>How does GPS<br>know where you are?</h1>
-
-                <p class="intro">
-                    GPS uses satellites in space to help your phone
-                    figure out its location.
-                </p>
-
-                <button id="startButton">Show me how</button>
-            </div>
-
-            <div class="earth-area">
-                <div class="orbit orbit-one"></div>
-                <div class="orbit orbit-two"></div>
-
-                <div class="earth">
-                    <div class="continent continent-one"></div>
-                    <div class="continent continent-two"></div>
-                    <div class="continent continent-three"></div>
-                </div>
-
-                <div class="satellite sat-one">
-                    <span>★</span>
-                </div>
-
-                <div class="satellite sat-two">
-                    <span>★</span>
-                </div>
-
-                <div class="satellite sat-three">
-                    <span>★</span>
-                </div>
-
-                <div class="signal signal-one"></div>
-                <div class="signal signal-two"></div>
-                <div class="signal signal-three"></div>
-
-                <div class="phone">
-                    <div class="phone-screen">
-                        <div class="location-dot"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="explainer" id="explainer">
-
-            <div class="section-heading">
-                <p class="small-title">STEP BY STEP</p>
-                <h2>It's actually pretty clever.</h2>
-                <p>
-                    Your phone doesn't ask a satellite,
-                    “Where am I?”
-                </p>
-                <p>
-                    Instead, it uses signals from several satellites
-                    to work it out.
-                </p>
-            </div>
-
-
-            <div class="step-card active" data-step="0">
-
-                <div class="step-number">01</div>
-
-                <div class="step-content">
-                    <h3>Satellites are always up there</h3>
-
-                    <p>
-                        GPS satellites orbit Earth and constantly
-                        send signals toward the ground.
-                    </p>
-
-                    <div class="visual-box">
-                        <div class="simple-space">
-                            <div class="mini-earth"></div>
-
-                            <div class="mini-satellite">
-                                ★
-                            </div>
-
-                            <div class="mini-signal"></div>
-                        </div>
-
-                        <div class="visual-caption">
-                            A satellite sends a signal toward Earth.
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="step-card" data-step="1">
-
-                <div class="step-number">02</div>
-
-                <div class="step-content">
-                    <h3>Your phone receives the signal</h3>
-
-                    <p>
-                        The signal travels from the satellite
-                        to your phone.
-                    </p>
-
-                    <p>
-                        Because we know how fast the signal travels,
-                        your phone can figure out roughly how far
-                        away the satellite is.
-                    </p>
-
-                    <div class="distance-demo">
-                        <div class="distance-line"></div>
-
-                        <div class="distance-satellite">
-                            ★
-                        </div>
-
-                        <div class="distance-phone">
-                            📱
-                        </div>
-
-                        <div class="distance-text">
-                            “The satellite is about this far away.”
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="step-card" data-step="2">
-
-                <div class="step-number">03</div>
-
-                <div class="step-content">
-                    <h3>One satellite isn't enough</h3>
-
-                    <p>
-                        Imagine you know you're exactly 20 km
-                        away from a satellite.
-                    </p>
-
-                    <p>
-                        You could be anywhere on a huge circle
-                        around that satellite.
-                    </p>
-
-                    <div class="circle-demo">
-                        <div class="circle-center">
-                            ★
-                        </div>
-
-                        <div class="big-circle"></div>
-
-                        <div class="circle-person">
-                            📱
-                        </div>
-                    </div>
-
-                    <div class="info-note">
-                        One satellite gives your phone a distance,
-                        but not your exact location.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="step-card" data-step="3">
-
-                <div class="step-number">04</div>
-
-                <div class="step-content">
-                    <h3>More satellites make it clearer</h3>
-
-                    <p>
-                        Your phone does the same thing with
-                        several satellites.
-                    </p>
-
-                    <p>
-                        The possible locations get smaller and smaller
-                        until the phone can find where the distances meet.
-                    </p>
-
-                    <div class="trilateration">
-
-                        <div class="gps-circle circle-a"></div>
-                        <div class="gps-circle circle-b"></div>
-                        <div class="gps-circle circle-c"></div>
-
-                        <div class="gps-satellite gps-a">★</div>
-                        <div class="gps-satellite gps-b">★</div>
-                        <div class="gps-satellite gps-c">★</div>
-
-                        <div class="your-location">
-                            <div class="location-pulse"></div>
-                            <span>YOU</span>
-                        </div>
-
-                    </div>
-
-                    <div class="info-note">
-                        Where the measurements meet is your location.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="step-card" data-step="4">
-
-                <div class="step-number">05</div>
-
-                <div class="step-content">
-                    <h3>And that's how your phone finds you</h3>
-
-                    <p>
-                        Your phone combines the information from
-                        several satellites and calculates your position.
-                    </p>
-
-                    <div class="result-box">
-
-                        <div class="result-icon">●</div>
-
-                        <div>
-                            <strong>Location found</strong>
-                            <p>
-                                Your phone now knows where you are.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <button class="again-button" id="againButton">
-                        Watch it again
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="try-it">
-
-            <p class="small-title">TRY IT</p>
-
-            <h2>See GPS find a location</h2>
+<section class="hero">
+    <div class="hero-content">
+        <div class="eyebrow">A tiny GPS experiment</div>
+
+        <h1>
+            WHERE<br>
+            AM I?
+        </h1>
+
+        <p class="hero-subtitle">
+            Your phone can figure out where it is
+            by listening to satellites in space.
+        </p>
+
+        <button class="primary-button" onclick="document.getElementById('step1').scrollIntoView()">
+            See how it works
+        </button>
+    </div>
+
+    <div class="scroll-hint">
+        Scroll to explore
+    </div>
+</section>
+
+
+<section class="story" id="step1">
+    <div class="story-inner">
+
+        <div class="story-text">
+            <div class="step">01 — THE SIGNAL</div>
+
+            <h2>
+                It starts<br>
+                in space.
+            </h2>
 
             <p>
-                Move the phone and watch the three circles change.
+                GPS satellites constantly send radio signals
+                towards Earth.
             </p>
+        </div>
 
-            <div class="interactive-map">
+        <div class="visual">
 
-                <div class="map-grid"></div>
+            <svg viewBox="0 0 800 600">
 
-                <div class="map-satellite map-sat-one">★</div>
-                <div class="map-satellite map-sat-two">★</div>
-                <div class="map-satellite map-sat-three">★</div>
+                <!-- Earth -->
+                <circle class="earth" cx="400" cy="620" r="330"/>
 
-                <div class="map-circle map-circle-one"></div>
-                <div class="map-circle map-circle-two"></div>
-                <div class="map-circle map-circle-three"></div>
+                <path class="land"
+                    d="M150 500
+                       C190 450 230 470 260 430
+                       C290 390 350 410 370 450
+                       C400 490 430 470 470 500
+                       C520 540 580 520 610 560
+                       L150 560 Z"/>
 
-                <div id="mapPhone" class="map-phone">
-                    📱
-                </div>
+                <!-- Satellite -->
+                <g transform="translate(400 120)">
+                    <rect class="satellite-panel"
+                          x="-100" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
 
-            </div>
+                    <rect class="satellite-panel"
+                          x="30" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
 
-            <input
-                id="positionSlider"
-                type="range"
-                min="10"
-                max="90"
-                value="50"
-            >
+                    <rect class="satellite"
+                          x="-30" y="-25"
+                          width="60"
+                          height="50"
+                          rx="8"/>
 
-            <p class="slider-label">
-                Move the phone
-            </p>
+                    <circle cx="0" cy="0" r="8" fill="#8ab4f8"/>
+                </g>
 
-        </section>
+                <!-- Signal -->
+                <path class="signal"
+                      d="M400 150 L400 430"/>
 
+                <path class="signal"
+                      d="M380 165 L380 420"/>
 
-        <section class="facts">
+                <path class="signal"
+                      d="M420 165 L420 420"/>
 
-            <div class="fact">
-                <strong>24+</strong>
-                <span>GPS satellites are available around Earth.</span>
-            </div>
+            </svg>
 
-            <div class="fact">
-                <strong>~20,000 km</strong>
-                <span>Above Earth, GPS satellites orbit.</span>
-            </div>
-
-            <div class="fact">
-                <strong>3D</strong>
-                <span>GPS can find your position and your height.</span>
-            </div>
-
-        </section>
+        </div>
+    </div>
+</section>
 
 
-        <section class="final-section">
+<section class="story" id="step2">
+    <div class="story-inner">
 
-            <div class="final-icon">GPS</div>
+        <div class="story-text">
+            <div class="step">02 — TIME</div>
 
-            <h2>So next time you open Maps...</h2>
+            <h2>
+                Your phone<br>
+                listens.
+            </h2>
 
             <p>
-                Remember that your phone is listening to signals
-                from satellites far above Earth and using them
-                to figure out where you are.
+                The signal travels at the speed of light.
+                Your phone measures how long it took to arrive.
             </p>
+        </div>
 
-        </section>
+        <div class="visual">
 
-    </main>
+            <svg viewBox="0 0 800 600">
+
+                <circle class="earth" cx="400" cy="620" r="330"/>
+
+                <path class="land"
+                    d="M150 500
+                       C190 450 230 470 260 430
+                       C290 390 350 410 370 450
+                       C400 490 430 470 470 500
+                       C520 540 580 520 610 560
+                       L150 560 Z"/>
+
+                <g transform="translate(400 100)">
+                    <rect class="satellite-panel"
+                          x="-100" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
+
+                    <rect class="satellite-panel"
+                          x="30" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
+
+                    <rect class="satellite"
+                          x="-30" y="-25"
+                          width="60"
+                          height="50"
+                          rx="8"/>
+
+                    <circle cx="0" cy="0" r="8" fill="#8ab4f8"/>
+                </g>
+
+                <circle class="distance-circle"
+                        cx="400"
+                        cy="390"
+                        r="180"/>
+
+                <rect class="phone"
+                      x="370"
+                      y="350"
+                      width="60"
+                      height="110"
+                      rx="12"/>
+
+                <rect class="phone-screen"
+                      x="377"
+                      y="360"
+                      width="46"
+                      height="80"
+                      rx="6"/>
+
+                <circle class="location-dot"
+                        cx="400"
+                        cy="400"
+                        r="8"/>
+
+                <path class="signal"
+                      d="M400 125 L400 390"/>
+
+            </svg>
+
+        </div>
+    </div>
+</section>
 
 
-    <footer>
-        <span>HOW GPS WORKS</span>
-        <span>Made for information class</span>
-    </footer>
+<section class="story" id="step3">
+    <div class="story-inner">
 
-    <script src="script.js"></script>
+        <div class="story-text">
+            <div class="step">03 — ONE CLUE</div>
+
+            <h2>
+                One satellite<br>
+                isn't enough.
+            </h2>
+
+            <p>
+                Knowing your distance from one satellite
+                still leaves lots of possible locations.
+            </p>
+        </div>
+
+        <div class="visual">
+
+            <svg viewBox="0 0 800 600">
+
+                <circle class="distance-circle"
+                        cx="400"
+                        cy="330"
+                        r="210"/>
+
+                <circle class="distance-circle"
+                        cx="400"
+                        cy="330"
+                        r="210"/>
+
+                <g transform="translate(400 120)">
+                    <rect class="satellite-panel"
+                          x="-100" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
+
+                    <rect class="satellite-panel"
+                          x="30" y="-18"
+                          width="70" height="36"
+                          rx="4"/>
+
+                    <rect class="satellite"
+                          x="-30" y="-25"
+                          width="60"
+                          height="50"
+                          rx="8"/>
+                </g>
+
+                <rect class="phone"
+                      x="370"
+                      y="275"
+                      width="60"
+                      height="110"
+                      rx="12"/>
+
+                <rect class="phone-screen"
+                      x="377"
+                      y="285"
+                      width="46"
+                      height="80"
+                      rx="6"/>
+
+                <circle class="location-dot"
+                        cx="400"
+                        cy="330"
+                        r="9"/>
+
+            </svg>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="story" id="step4">
+    <div class="story-inner">
+
+        <div class="story-text">
+            <div class="step">04 — MORE CLUES</div>
+
+            <h2>
+                Add another<br>
+                satellite.
+            </h2>
+
+            <p>
+                Now there is another possible distance.
+                The possible locations become much smaller.
+            </p>
+        </div>
+
+        <div class="visual">
+
+            <svg viewBox="0 0 800 600">
+
+                <circle class="distance-circle"
+                        cx="310"
+                        cy="330"
+                        r="180"/>
+
+                <circle class="distance-circle"
+                        cx="490"
+                        cy="330"
+                        r="180"/>
+
+                <!-- Satellite 1 -->
+                <g transform="translate(270 120)">
+                    <rect class="satellite-panel"
+                          x="-75" y="-15"
+                          width="50" height="30"/>
+
+                    <rect class="satellite-panel"
+                          x="25" y="-15"
+                          width="50" height="30"/>
+
+                    <rect class="satellite"
+                          x="-25" y="-20"
+                          width="50"
+                          height="40"
+                          rx="7"/>
+                </g>
+
+                <!-- Satellite 2 -->
+                <g transform="translate(530 150)">
+                    <rect class="satellite-panel"
+                          x="-75" y="-15"
+                          width="50" height="30"/>
+
+                    <rect class="satellite-panel"
+                          x="25" y="-15"
+                          width="50" height="30"/>
+
+                    <rect class="satellite"
+                          x="-25" y="-20"
+                          width="50"
+                          height="40"
+                          rx="7"/>
+                </g>
+
+                <circle class="location-dot"
+                        cx="400"
+                        cy="330"
+                        r="10"/>
+
+            </svg>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="story" id="step5">
+    <div class="story-inner">
+
+        <div class="story-text">
+            <div class="step">05 — YOUR LOCATION</div>
+
+            <h2>
+                Enough clues<br>
+                reveal it.
+            </h2>
+
+            <p>
+                With signals from several satellites,
+                your phone can calculate the location that
+                fits all of them.
+            </p>
+        </div>
+
+        <div class="visual">
+
+            <svg viewBox="0 0 800 600">
+
+                <circle class="distance-circle"
+                        cx="340"
+                        cy="330"
+                        r="190"/>
+
+                <circle class="distance-circle"
+                        cx="460"
+                        cy="330"
+                        r="190"/>
+
+                <circle class="distance-circle"
+                        cx="400"
+                        cy="270"
+                        r="190"/>
+
+                <circle class="location-dot"
+                        cx="400"
+                        cy="330"
+                        r="13"/>
+
+                <circle
+                        cx="400"
+                        cy="330"
+                        r="30"
+                        fill="none"
+                        stroke="#8ab4f8"
+                        stroke-width="2"
+                        opacity=".4"/>
+
+                <text
+                    x="400"
+                    y="405"
+                    text-anchor="middle"
+                    fill="#1967d2"
+                    font-size="22"
+                    font-weight="600">
+                    THAT'S WHERE YOU ARE
+                </text>
+
+            </svg>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="interactive">
+
+    <div class="interactive-header">
+
+        <div class="eyebrow">Try it yourself</div>
+
+        <h2>
+            Can you find<br>
+            the phone?
+        </h2>
+
+        <p>
+            Each satellite gives you another clue.
+            Watch what happens as we add them.
+        </p>
+
+    </div>
+
+    <div class="demo">
+
+        <svg viewBox="0 0 1050 620">
+
+            <!-- circles -->
+            <circle id="circle1"
+                    cx="525"
+                    cy="340"
+                    r="220"
+                    fill="rgba(26,115,232,.07)"
+                    stroke="#8ab4f8"
+                    stroke-width="2"
+                    opacity="0"/>
+
+            <circle id="circle2"
+                    cx="420"
+                    cy="340"
+                    r="190"
+                    fill="rgba(26,115,232,.07)"
+                    stroke="#8ab4f8"
+                    stroke-width="2"
+                    opacity="0"/>
+
+            <circle id="circle3"
+                    cx="525"
+                    cy="270"
+                    r="190"
+                    fill="rgba(26,115,232,.07)"
+                    stroke="#8ab4f8"
+                    stroke-width="2"
+                    opacity="0"/>
+
+            <!-- satellites -->
+
+            <g transform="translate(525 80)">
+                <rect class="satellite-panel"
+                      x="-95"
+                      y="-15"
+                      width="65"
+                      height="30"/>
+
+                <rect class="satellite-panel"
+                      x="30"
+                      y="-15"
+                      width="65"
+                      height="30"/>
+
+                <rect class="satellite"
+                      x="-30"
+                      y="-22"
+                      width="60"
+                      height="44"
+                      rx="8"/>
+            </g>
+
+            <g id="sat2"
+               transform="translate(250 150)"
+               opacity="0">
+
+                <rect class="satellite-panel"
+                      x="-80"
+                      y="-14"
+                      width="55"
+                      height="28"/>
+
+                <rect class="satellite-panel"
+                      x="25"
+                      y="-14"
+                      width="55"
+                      height="28"/>
+
+                <rect class="satellite"
+                      x="-25"
+                      y="-20"
+                      width="50"
+                      height="40"
+                      rx="7"/>
+            </g>
+
+            <g id="sat3"
+               transform="translate(800 130)"
+               opacity="0">
+
+                <rect class="satellite-panel"
+                      x="-80"
+                      y="-14"
+                      width="55"
+                      height="28"/>
+
+                <rect class="satellite-panel"
+                      x="25"
+                      y="-14"
+                      width="55"
+                      height="28"/>
+
+                <rect class="satellite"
+                      x="-25"
+                      y="-20"
+                      width="50"
+                      height="40"
+                      rx="7"/>
+            </g>
+
+            <!-- phone -->
+
+            <rect id="demoPhone"
+                  class="phone"
+                  x="495"
+                  y="310"
+                  width="60"
+                  height="110"
+                  rx="13"/>
+
+            <rect class="phone-screen"
+                  x="502"
+                  y="320"
+                  width="46"
+                  height="80"
+                  rx="6"/>
+
+            <circle id="demoDot"
+                    cx="525"
+                    cy="360"
+                    r="8"
+                    fill="#1a73e8"/>
+
+        </svg>
+
+        <div class="demo-controls">
+            <button class="active" onclick="showSatellites(1, this)">
+                One
+            </button>
+
+            <button onclick="showSatellites(2, this)">
+                Two
+            </button>
+
+            <button onclick="showSatellites(3, this)">
+                Three
+            </button>
+        </div>
+
+    </div>
+
+    <div class="explanation" id="explanation">
+        One satellite gives you one distance.
+    </div>
+
+</section>
+
+
+<section class="nerdy">
+
+    <div class="nerdy-inner">
+
+        <div class="eyebrow">Want the nerdy version?</div>
+
+        <h2>
+            GPS is basically<br>
+            very precise timing.
+        </h2>
+
+        <p>
+            Your phone receives radio signals from GPS satellites.
+            Because those signals travel at a known speed, the phone
+            can use the tiny difference between the sending and
+            receiving times to estimate how far away each satellite is.
+        </p>
+
+        <p>
+            In the real world, GPS works in three dimensions.
+            Your phone normally uses signals from at least four
+            satellites to calculate its position and correct for
+            the phone's own clock error.
+        </p>
+
+        <div class="nerdy-grid">
+
+            <div class="nerdy-card">
+                <strong>Radio signals</strong>
+                <span>
+                    Satellites continuously broadcast information
+                    that your receiver can understand.
+                </span>
+            </div>
+
+            <div class="nerdy-card">
+                <strong>Travel time</strong>
+                <span>
+                    The receiver measures how long the signal
+                    took to arrive.
+                </span>
+            </div>
+
+            <div class="nerdy-card">
+                <strong>Trilateration</strong>
+                <span>
+                    Several distance measurements are combined
+                    to calculate the position.
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="final">
+
+    <div>
+
+        <h2>
+            GPS doesn't<br>
+            <span class="blue">know where you are.</span>
+        </h2>
+
+        <p>
+            Your phone figures it out.
+        </p>
+
+    </div>
+
+</section>
+
+
+<script>
+
+const stories = document.querySelectorAll(".story");
+
+const observer = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+            }
+
+        });
+
+    },
+    {
+        threshold: 0.45
+    }
+);
+
+stories.forEach(story => {
+    observer.observe(story);
+});
+
+
+function showSatellites(number, button) {
+
+    const circle1 = document.getElementById("circle1");
+    const circle2 = document.getElementById("circle2");
+    const circle3 = document.getElementById("circle3");
+
+    const sat2 = document.getElementById("sat2");
+    const sat3 = document.getElementById("sat3");
+
+    const explanation = document.getElementById("explanation");
+
+    document
+        .querySelectorAll(".demo-controls button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    circle1.style.opacity = "0";
+    circle2.style.opacity = "0";
+    circle3.style.opacity = "0";
+
+    sat2.style.opacity = "0";
+    sat3.style.opacity = "0";
+
+    if (number === 1) {
+
+        circle1.style.opacity = "1";
+
+        explanation.textContent =
+            "One satellite gives you one distance — but there are still many possible locations.";
+
+    }
+
+    if (number === 2) {
+
+        circle1.style.opacity = "1";
+        circle2.style.opacity = "1";
+        sat2.style.opacity = "1";
+
+        explanation.textContent =
+            "A second satellite adds another distance. The possible locations get smaller.";
+
+    }
+
+    if (number === 3) {
+
+        circle1.style.opacity = "1";
+        circle2.style.opacity = "1";
+        circle3.style.opacity = "1";
+
+        sat2.style.opacity = "1";
+        sat3.style.opacity = "1";
+
+        explanation.textContent =
+            "More satellites give more clues. Their measurements reveal the phone's position.";
+
+    }
+}
+
+</script>
 
 </body>
 </html>
