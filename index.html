@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Happens When You Visit a Website?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background">
+        <div class="grid"></div>
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <span class="logo-dot"></span>
+            WEB//FLOW
+        </div>
+        <div class="header-status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="eyebrow">INTERACTIVE INTERNET SIMULATION</div>
+
+            <h1>
+                What happens when<br>
+                <span>you visit a website?</span>
+            </h1>
+
+            <p class="intro">
+                Type a website below and watch your request travel
+                through the internet, step by step.
+            </p>
+
+            <div class="url-box">
+                <div class="url-icon">⌕</div>
+                <input
+                    id="urlInput"
+                    type="text"
+                    value="example.com"
+                    spellcheck="false"
+                    autocomplete="off"
+                >
+                <button id="startButton">START <span>→</span></button>
+            </div>
+
+            <div class="hint">
+                Try <b>google.com</b>, <b>wikipedia.org</b>, or any website
+            </div>
+        </section>
+
+        <section class="simulation hidden" id="simulation">
+
+            <div class="simulation-top">
+                <div>
+                    <div class="eyebrow">LIVE SIMULATION</div>
+                    <h2 id="simulationTitle">Connecting...</h2>
+                </div>
+
+                <button class="restart" id="restartButton">
+                    ↻ Restart
+                </button>
+            </div>
+
+            <div class="network">
+
+                <div class="node computer">
+                    <div class="node-icon">▣</div>
+                    <div class="node-title">YOUR COMPUTER</div>
+                    <div class="node-sub">Browser</div>
+                    <div class="node-pulse"></div>
+                </div>
+
+                <div class="connection connection-one">
+                    <div class="packet"></div>
+                    <div class="connection-label">REQUEST</div>
+                </div>
+
+                <div class="node dns">
+                    <div class="node-icon">⌁</div>
+                    <div class="node-title">DNS</div>
+                    <div class="node-sub">Name lookup</div>
+                    <div class="node-pulse"></div>
+                </div>
+
+                <div class="connection connection-two">
+                    <div class="packet"></div>
+                    <div class="connection-label">IP ADDRESS</div>
+                </div>
+
+                <div class="node internet">
+                    <div class="node-icon">◎</div>
+                    <div class="node-title">INTERNET</div>
+                    <div class="node-sub">Network</div>
+                    <div class="node-pulse"></div>
+                </div>
+
+                <div class="connection connection-three">
+                    <div class="packet"></div>
+                    <div class="connection-label">HTTPS</div>
+                </div>
+
+                <div class="node server">
+                    <div class="node-icon">▤</div>
+                    <div class="node-title">WEB SERVER</div>
+                    <div class="node-sub" id="serverName">example.com</div>
+                    <div class="node-pulse"></div>
+                </div>
+
+            </div>
+
+            <div class="info-panel">
+                <div class="step-number" id="stepNumber">01</div>
+
+                <div class="step-content">
+                    <div class="step-label" id="stepLabel">DNS LOOKUP</div>
+                    <h3 id="stepTitle">Finding the website</h3>
+                    <p id="stepDescription">
+                        Your browser needs to find the IP address of the
+                        server hosting the website.
+                    </p>
+                </div>
+
+                <div class="step-progress">
+                    <div class="progress-label">
+                        <span>PROGRESS</span>
+                        <span id="progressText">1 / 5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="technical-panel">
+                <div class="tech-header">
+                    <span>NETWORK ACTIVITY</span>
+                    <span id="activityStatus">WAITING</span>
+                </div>
+
+                <div class="terminal" id="terminal">
+                    <div><span class="terminal-green">›</span> Initializing simulation...</div>
+                </div>
+            </div>
+
+            <div class="continue-area">
+                <button id="nextButton" class="next-button">
+                    NEXT STEP <span>→</span>
+                </button>
+            </div>
+
+        </section>
+
+        <section class="final hidden" id="final">
+
+            <div class="success-icon">✓</div>
+
+            <div class="eyebrow">TRANSMISSION COMPLETE</div>
+
+            <h2>
+                The website<br>
+                <span>has arrived.</span>
+            </h2>
+
+            <p>
+                Your browser requested information, the server processed it,
+                and the response travelled all the way back to you.
+            </p>
+
+            <div class="stats">
+                <div class="stat">
+                    <strong id="statDns">24</strong>
+                    <span>DNS ms</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="statConnection">47</strong>
+                    <span>CONNECTION ms</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="statServer">82</strong>
+                    <span>SERVER ms</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="statTotal">153</strong>
+                    <span>TOTAL ms</span>
+                </div>
+            </div>
+
+            <button id="againButton" class="next-button">
+                RUN AGAIN <span>↻</span>
+            </button>
+
+        </section>
+    </main>
+
+    <footer>
+        <span>WEB//FLOW</span>
+        <span>Built for Information Class</span>
+        <span>© 2026</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
